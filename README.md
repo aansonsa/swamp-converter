@@ -6,7 +6,7 @@
 
 **Drag a file. A wheel appears. Drop it on what you want.**
 
-Convert, compress, download and tidy files from a radial menu that opens right where you are working.
+Convert, compress and tidy files, and download videos from YouTube and other sites in up to 8K, all from a radial menu that opens right where you are working.
 Everything runs on your Mac.
 
 [![Download the latest release](https://img.shields.io/github/v/release/aansonsa/swamp-converter?style=for-the-badge&label=Download&logo=apple&logoColor=black&labelColor=FF72D9&color=7DA7D9)](https://github.com/aansonsa/swamp-converter/releases/latest)
@@ -32,7 +32,7 @@ Made for creators who live in files: footage, pictures, PDFs, audio, links to re
 
 - **One gesture.** Start dragging any file, tap a key (or shake it), and a wheel opens under the pointer. Drop on a sector and the work starts.
 - **Same engine, two speeds.** The wheel is the quick way; the **Studio** is a HandBrake-class window when you want every option, a before/after preview and a queue.
-- **Links too.** Press a shortcut over a web page and the wheel offers *Best for Apple*, *Maximum quality*, *Universal*, *Audio M4A* or *Audio MP3*.
+- **Download video in up to 8K.** Press a shortcut over a YouTube page (or any of the many sites yt-dlp supports) and the wheel offers *Best for Apple*, *Maximum quality* (the best the site has, untouched, up to 8K), *Universal*, *Audio M4A* or *Audio MP3*. The Studio adds a resolution ladder from 8K down, a time range and subtitles. Use it only for content you have the right to download.
 - **Honest conversions.** Every operation is run on real files in the test suite and judged by an independent reader (the format is sniffed from the bytes, the result must decode and keep its content). See the [conversion matrix](docs/conversion-matrix.md).
 - **Private.** No telemetry, no account. The network is used only by the downloader, only after you agree, and never for anything else.
 - **Small and quiet.** About 10 MB, nothing running while you do not use it.
