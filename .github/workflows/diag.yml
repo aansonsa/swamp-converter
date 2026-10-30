@@ -1,0 +1,20 @@
+name: Diagnose runner
+
+on: workflow_dispatch
+
+jobs:
+  diag:
+    runs-on: macos-latest
+    steps:
+      - name: Toolchain facts
+        run: |
+          echo "== xcode-select: $(xcode-select -p)"
+          echo "== CLT swiftc:"; /Library/Developer/CommandLineTools/usr/bin/swiftc --version 2>&1 | head -2
+          echo "== Xcode swiftc:"; "$(xcode-select -p)/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc" --version 2>&1 | head -2
+          echo "== CLT SDKs:"; ls -l /Library/Developer/CommandLineTools/SDKs/
+          echo "== Xcodes:"; ls -d /Applications/Xcode*.app
+          echo "== SwiftUIMacros dylibs:"; find /Applications /Library/Developer -name 'libSwiftUIMacros.dylib' 2>/dev/null
+          echo "== CLT plugin dir:"; ls /Library/Developer/CommandLineTools/usr/lib/swift/host/plugins/
+          for s in /Library/Developer/CommandLineTools/SDKs/MacOSX2*.sdk; do
+            echo "== $s: macro State declared? $(grep -l 'macro State' $s/System/Library/Frameworks/SwiftUI.framework/Modules/SwiftUI.swiftmodule/*.swiftinterface 2>/dev/null | wc -l)"
+          done
