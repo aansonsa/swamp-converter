@@ -1,0 +1,51 @@
+{
+  "id": "abc123XYZ_-",
+  "title": "Болото / Swamp: Part 1",
+  "fulltitle": "Болото / Swamp: Part 1",
+  "webpage_url": "https://www.youtube.com/watch?v=abc123XYZ_-",
+  "original_url": "https://youtu.be/abc123XYZ_-?si=tracking",
+  "extractor": "youtube",
+  "extractor_key": "Youtube",
+  "channel": "Swamp Films",
+  "uploader": "Swamp Films",
+  "upload_date": "20260102",
+  "duration": 612,
+  "is_live": false,
+  "live_status": "not_live",
+  "thumbnail": "https://i.ytimg.com/vi/abc123XYZ_-/maxresdefault.jpg",
+  "thumbnails": [
+    {"url": "https://i.ytimg.com/vi/abc123XYZ_-/hqdefault.jpg", "height": 360, "width": 480},
+    {"url": "https://i.ytimg.com/vi/abc123XYZ_-/maxresdefault.jpg", "height": 720, "width": 1280}
+  ],
+  "chapters": [
+    {"start_time": 0.0, "end_time": 120.5, "title": "Intro"},
+    {"start_time": 120.5, "end_time": 612.0, "title": "The marsh"}
+  ],
+  "subtitles": {
+    "ru": [{"ext": "vtt", "url": "https://example.invalid/ru.vtt", "name": "Russian"}],
+    "en": [{"ext": "vtt", "url": "https://example.invalid/en.vtt", "name": "English"}],
+    "live_chat": [{"ext": "json", "url": "https://example.invalid/chat.json"}]
+  },
+  "automatic_captions": {
+    "en-orig": [{"ext": "vtt", "url": "https://example.invalid/auto-en.vtt", "name": "English (Original)"}],
+    "lv": [{"ext": "vtt", "url": "https://example.invalid/auto-lv.vtt", "name": "Latvian"}]
+  },
+  "formats": [
+    {"format_id": "sb0", "ext": "mhtml", "protocol": "mhtml", "vcodec": "none", "acodec": "none", "format_note": "storyboard", "width": 48, "height": 27},
+    {"format_id": "139", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.5", "abr": 48.9, "tbr": 48.9, "filesize": 3700000, "format_note": "low", "language": "en", "protocol": "https"},
+    {"format_id": "140", "ext": "m4a", "vcodec": "none", "acodec": "mp4a.40.2", "abr": 129.5, "tbr": 129.5, "filesize": 9900000, "format_note": "medium", "language": "en", "protocol": "https"},
+    {"format_id": "251", "ext": "webm", "vcodec": "none", "acodec": "opus", "abr": 135.2, "tbr": 135.2, "filesize": 10200000, "format_note": "medium", "language": "en", "protocol": "https"},
+    {"format_id": "160", "ext": "mp4", "vcodec": "avc1.4d400c", "acodec": "none", "width": 256, "height": 144, "fps": 30, "tbr": 108.0, "filesize": 8100000, "dynamic_range": "SDR", "protocol": "https"},
+    {"format_id": "18", "ext": "mp4", "vcodec": "avc1.42001E", "acodec": "mp4a.40.2", "width": 640, "height": 360, "fps": 30, "tbr": 480.0, "filesize_approx": 36000000, "dynamic_range": "SDR", "protocol": "https"},
+    {"format_id": "134", "ext": "mp4", "vcodec": "avc1.4d401e", "acodec": "none", "width": 640, "height": 360, "fps": 30, "tbr": 300.0, "filesize": 22000000, "dynamic_range": "SDR", "protocol": "https"},
+    {"format_id": "243", "ext": "webm", "vcodec": "vp09.00.21.08", "acodec": "none", "width": 640, "height": 360, "fps": 30, "tbr": 250.0, "filesize": 18000000, "dynamic_range": "SDR", "protocol": "https"},
+    {"format_id": "136", "ext": "mp4", "vcodec": "avc1.4d401f", "acodec": "none", "width": 1280, "height": 720, "fps": 30, "tbr": 1200.0, "filesize": 90000000, "dynamic_range": "SDR", "protocol": "https"},
+    {"format_id": "247", "ext": "webm", "vcodec": "vp09.00.31.08", "acodec": "none", "width": 1280, "height": 720, "fps": 30, "tbr": 1000.0, "filesize": 76000000, "dynamic_range": "SDR", "protocol": "https"},
+    {"format_id": "137", "ext": "mp4", "vcodec": "avc1.640028", "acodec": "none", "width": 1920, "height": 1080, "fps": 30, "tbr": 2500.0, "filesize": 190000000, "dynamic_range": "SDR", "protocol": "https"},
+    {"format_id": "248", "ext": "webm", "vcodec": "vp09.00.40.08", "acodec": "none", "width": 1920, "height": 1080, "fps": 30, "tbr": 1700.0, "filesize": 128000000, "dynamic_range": "SDR", "protocol": "https"},
+    {"format_id": "399", "ext": "mp4", "vcodec": "av01.0.08M.08", "acodec": "none", "width": 1920, "height": 1080, "fps": 30, "tbr": 1400.0, "filesize": 105000000, "dynamic_range": "SDR", "protocol": "https"},
+    {"format_id": "271", "ext": "webm", "vcodec": "vp09.00.40.08", "acodec": "none", "width": 2560, "height": 1440, "fps": 30, "tbr": 6000.0, "filesize": 420000000, "dynamic_range": "SDR", "protocol": "https"},
+    {"format_id": "313", "ext": "webm", "vcodec": "vp09.00.50.08", "acodec": "none", "width": 3840, "height": 2160, "fps": 30, "tbr": 14000.0, "filesize": 1000000000, "dynamic_range": "SDR", "protocol": "https"},
+    {"format_id": "401", "ext": "mp4", "vcodec": "av01.0.12M.08", "acodec": "none", "width": 3840, "height": 2160, "fps": 30, "tbr": 9000.0, "filesize": 640000000, "dynamic_range": "SDR", "protocol": "https"}
+  ]
+}

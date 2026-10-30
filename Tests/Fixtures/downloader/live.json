@@ -1,0 +1,13 @@
+{
+  "id": "liveStream01",
+  "title": "Swamp cam (live)",
+  "webpage_url": "https://www.youtube.com/watch?v=liveStream01",
+  "extractor_key": "Youtube",
+  "channel": "Swamp Cams",
+  "is_live": true,
+  "live_status": "is_live",
+  "duration": null,
+  "formats": [
+    {"format_id": "95", "ext": "mp4", "protocol": "m3u8_native", "vcodec": "avc1.4D401F", "acodec": "mp4a.40.2", "width": 1280, "height": 720, "fps": 30, "tbr": 1500.0}
+  ]
+}

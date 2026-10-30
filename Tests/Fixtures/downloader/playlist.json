@@ -1,0 +1,15 @@
+{
+  "_type": "playlist",
+  "id": "PLswampMix",
+  "title": "Swamp Mix",
+  "webpage_url": "https://www.youtube.com/playlist?list=PLswampMix",
+  "extractor_key": "YoutubeTab",
+  "uploader": "Swamp Films",
+  "playlist_count": 4,
+  "entries": [
+    {"_type": "url", "ie_key": "Youtube", "id": "pl_one", "title": "First swamp", "url": "https://www.youtube.com/watch?v=pl_one", "duration": 61.0, "channel": "Swamp Films", "thumbnails": [{"url": "https://i.ytimg.com/vi/pl_one/hqdefault.jpg"}]},
+    null,
+    {"_type": "url", "ie_key": "Youtube", "id": "pl_two", "title": "Second swamp", "url": "https://www.youtube.com/watch?v=pl_two", "duration": 125.5, "uploader": "Swamp Films"},
+    {"_type": "url", "ie_key": "Youtube", "id": "pl_three", "url": "https://www.youtube.com/watch?v=pl_three", "playlist_index": 4}
+  ]
+}

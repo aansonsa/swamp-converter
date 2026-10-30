@@ -1,0 +1,8 @@
+"CFBundleDisplayName" = "Swamp Converter";
+"NSAppleEventsUsageDescription" = "Swamp Converter считывает выбранные в Finder файлы и адрес страницы, открытой в браузере, чтобы сочетание клавиш могло конвертировать или скачать то, на что вы смотрите.";
+"NSDesktopFolderUsageDescription" = "Swamp Converter конвертирует файлы, которые вы на него перетаскиваете, в том числе файлы на рабочем столе.";
+"NSDocumentsFolderUsageDescription" = "Swamp Converter конвертирует файлы, которые вы на него перетаскиваете, в том числе файлы в папке «Документы».";
+"NSDownloadsFolderUsageDescription" = "Swamp Converter конвертирует файлы, которые вы на него перетаскиваете, и может следить за выбранными вами папками, например «Загрузки».";
+"NSRemovableVolumesUsageDescription" = "Swamp Converter конвертирует файлы, которые вы на него перетаскиваете, в том числе файлы на внешних дисках.";
+"NSNetworkVolumesUsageDescription" = "Swamp Converter конвертирует файлы, которые вы на него перетаскиваете, в том числе файлы на сетевых томах.";
+"NSSpeechRecognitionUsageDescription" = "Swamp Converter распознаёт речь в ваших аудио- и видеофайлах на этом Mac, чтобы создать расшифровку. Ничего никуда не отправляется.";

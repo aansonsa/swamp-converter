@@ -1,0 +1,13 @@
+# macOS and the exFAT drive
+.DS_Store
+._*
+# build output (the app builds in ~/Library/Caches/SwampConverter)
+dist/
+*.part
+# AI tooling and local databases: never part of the project
+.claude/
+.claude-flow/
+.swarm/
+agentdb.rvf
+agentdb.rvf.idmap.json
+ruvector.db

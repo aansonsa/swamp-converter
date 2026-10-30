@@ -1,0 +1,216 @@
+#!/bin/zsh
+# FAKE yt-dlp for the Swamp Converter self-tests. It NEVER touches the network and never reads anything but its own fixtures.
+# It understands the subset of yt-dlp that the downloader module uses and prints realistic `-J` JSON and `--progress-template` lines.
+#
+# Behaviour is steered by the URL (default: a normal video) and by these variables (set in a fake.env file next to the script, or in the environment):
+#   FAKE_YTDLP_ARGV_LOG     file that receives one block per invocation: "--- invocation" followed by one argument per line
+#   FAKE_YTDLP_TOTAL        total bytes of one downloaded video (default 400000)
+#   FAKE_YTDLP_STEPS        progress steps per file (default 8)
+#   FAKE_YTDLP_DELAY        seconds between steps (default 0.02)
+#   FAKE_YTDLP_FAIL_AT      die with a network error after this many steps of THIS invocation, leaving the .part file behind
+#   FAKE_YTDLP_INFO_DELAY   seconds to sleep before printing -J output (cancel tests)
+#   FAKE_YTDLP_PAYLOAD      path of a real media file to use as the content of the final file (end-to-end convert tests)
+#   FAKE_YTDLP_VERSION      value printed for --version (default 2026.10.20)
+# URL keywords: 8k, live, audio, playlist, private, unsupported, signin, geo, drm, offline, notfound, nolist (an empty playlist)
+
+emulate -L zsh
+unsetopt nomatch 2>/dev/null
+HERE=${0:A:h}
+# The tests configure the fake through this file (plain NAME=value lines) so nothing depends on the environment of the parent process.
+[[ -f "$HERE/fake.env" ]] && source "$HERE/fake.env"
+
+if [[ -n ${FAKE_YTDLP_ARGV_LOG:-} ]]; then
+  { print -r -- "--- invocation"; for a in "$@"; do print -r -- "$a"; done } >> "$FAKE_YTDLP_ARGV_LOG"
+fi
+
+if [[ ${1:-} == --version ]]; then print -r -- "${FAKE_YTDLP_VERSION:-2026.10.20}"; exit 0; fi
+
+args=("$@")
+home=""; tmpdir=""; template="%(title)s [%(id)s].%(ext)s"; ptemplate=""; printfile=""
+extract=0; afmt="m4a"; sections=""; items=""; noplaylist=0; yesplaylist=0; json=0; flat=0; url=""; fsel=""; resume=0
+i=1
+while (( i <= $# )); do
+  a=${args[i]}
+  case $a in
+    --) (( i++ )); url=${args[i]:-}; break ;;
+    -J|--dump-single-json) json=1 ;;
+    --flat-playlist) flat=1 ;;
+    --no-playlist) noplaylist=1 ;;
+    --yes-playlist) yesplaylist=1 ;;
+    --continue) resume=1 ;;
+    -P) (( i++ )); p=${args[i]}; case $p in home:*) home=${p#home:} ;; temp:*) tmpdir=${p#temp:} ;; *) home=$p ;; esac ;;
+    -o) (( i++ )); template=${args[i]} ;;
+    -f) (( i++ )); fsel=${args[i]} ;;
+    --progress-template) (( i++ )); ptemplate=${args[i]} ;;
+    --print-to-file) (( i++ )); (( i++ )); printfile=${args[i]} ;;
+    -x) extract=1 ;;
+    --audio-format) (( i++ )); afmt=${args[i]} ;;
+    --download-sections) (( i++ )); sections=${args[i]} ;;
+    --playlist-items) (( i++ )); items=${args[i]} ;;
+  esac
+  (( i++ ))
+done
+
+err() { print -u2 -r -- "$1"; exit 1 }
+
+# ---- URL steering -------------------------------------------------------------------------------------------------------------
+case $url in
+  *private*) err "ERROR: [youtube] abc123XYZ_-: Private video. Sign in if you've been granted access to this video" ;;
+  *unsupported*) err "ERROR: Unsupported URL: $url" ;;
+  *signin*) err "ERROR: [youtube] abc123XYZ_-: Sign in to confirm you're not a bot. Use --cookies-from-browser or --cookies for the authentication." ;;
+  *geo*) err "ERROR: [youtube] abc123XYZ_-: The uploader has not made this video available in your country" ;;
+  *drm*) err "ERROR: [generic] This video is DRM protected" ;;
+  *offline*) err "ERROR: [youtube] abc123XYZ_-: Unable to download webpage: <urlopen error [Errno 8] nodename nor servname provided, or not known> (caused by URLError(gaierror(8, 'nodename nor servname provided, or not known')))" ;;
+  *notfound*) err "ERROR: [generic] Unable to download webpage: HTTP Error 404: Not Found" ;;
+esac
+
+fixture=video.json
+case $url in
+  *8k*) fixture=video-8k-hdr.json ;;
+  *live*) fixture=live.json ;;
+  *audio*) fixture=audio-only.json ;;
+  *nolist*) fixture=playlist-empty.json ;;
+  *playlist*) (( noplaylist )) && [[ $url == *v=* ]] || fixture=playlist.json ;;
+esac
+
+# ---- info -----------------------------------------------------------------------------------------------------------------------
+if (( json )); then
+  [[ -n ${FAKE_YTDLP_INFO_DELAY:-} ]] && sleep "$FAKE_YTDLP_INFO_DELAY"
+  cat "$HERE/$fixture"
+  exit 0
+fi
+
+# ---- download -------------------------------------------------------------------------------------------------------------------
+trap 'exit 143' TERM INT
+[[ -n $home ]] || home=$PWD
+[[ -n $tmpdir ]] || tmpdir=$home
+mkdir -p "$home" "$tmpdir"
+
+total=${FAKE_YTDLP_TOTAL:-400000}
+steps=${FAKE_YTDLP_STEPS:-8}
+delay=${FAKE_YTDLP_DELAY:-0.02}
+fail_at=${FAKE_YTDLP_FAIL_AT:-0}
+done_steps=0
+
+ids=(abc123XYZ_-); titles=("Болото ⧸ Swamp [Part 1]")
+if [[ $fixture == playlist.json ]]; then
+  ids=(pl_one pl_two pl_three); titles=("First swamp" "Second swamp" "Third swamp")
+  sel=()
+  if [[ -n $items ]]; then
+    for part in ${(s:,:)items}; do
+      if [[ $part == *-* ]]; then for (( n=${part%-*}; n<=${part#*-}; n++ )); do sel+=($n); done; else sel+=($part); fi
+    done
+  else
+    sel=(1 2 3)
+  fi
+elif [[ $fixture == audio-only.json ]]; then
+  ids=(snd_one); titles=("Swamp ambience")
+  sel=(1)
+else
+  sel=(1)
+fi
+count=${#sel}
+
+# Expands the output template for one entry (supports the subset used by the app and its tests).
+expand() {  # expand <title> <id> <ext> <index>
+  local t=$template
+  t=${t//'%(title).150B'/$1}; t=${t//'%(title)s'/$1}; t=${t//'%(id)s'/$2}; t=${t//'%(ext)s'/$3}
+  t=${t//'%(playlist_index)s'/$4}; t=${t//'%(playlist_index)02d'/${(l:2::0:)4}}; t=${t//'%(playlist)s'/Swamp Mix}
+  print -r -- "$t"
+}
+
+emit() {  # emit <status> <downloaded> <total> <estimate> <speed> <eta> <index> <n>
+  if [[ -z $ptemplate ]]; then
+    print -r -- "[download]  $(( $2 * 100 / ${3:-1} )).0% of 390.62KiB at 1.00MiB/s ETA 00:01"
+    return
+  fi
+  local t=$ptemplate
+  t=${t#download:}
+  t=${t//'%(progress.status)s'/$1}; t=${t//'%(progress.downloaded_bytes)s'/$2}; t=${t//'%(progress.total_bytes)s'/$3}
+  t=${t//'%(progress.total_bytes_estimate)s'/$4}; t=${t//'%(progress.speed)s'/$5}; t=${t//'%(progress.eta)s'/$6}
+  t=${t//'%(info.playlist_autonumber)s'/$7}; t=${t//'%(info.n_entries)s'/$8}
+  print -r -- "$t"
+}
+
+# One downloaded file (video or audio stream) written as <tmpdir>/<name>.part; resumes when the .part file exists.
+fetch_part() {  # fetch_part <path-without-.part> <bytes> <index> <n>
+  local target=$1 bytes=$2 idx=$3 n=$4 partfile=$1.part
+  local chunk=$(( bytes / steps )) startstep=0 existing=0
+  mkdir -p "${target:h}"
+  if (( resume )) && [[ -f $partfile ]]; then
+    existing=$(stat -f %z "$partfile")
+    startstep=$(( existing / chunk ))
+    print -r -- "[download] Resuming download at byte $existing"
+  fi
+  : > "$partfile.ytdl"
+  [[ -f $partfile ]] || : > "$partfile"
+  local s
+  for (( s = startstep + 1; s <= steps; s++ )); do
+    sleep "$delay"
+    head -c $chunk /dev/zero >> "$partfile"
+    (( done_steps++ ))
+    local have=$(( s * chunk ))
+    if [[ -n $sections ]]; then
+      emit downloading $have NA NA NA NA $idx $n
+    else
+      emit downloading $have $bytes NA 1048576.0 $(( steps - s )) $idx $n
+    fi
+    if (( fail_at > 0 && done_steps >= fail_at )); then
+      print -u2 -r -- "ERROR: unable to download video data: <urlopen error [Errno 54] Connection reset by peer>"
+      exit 1
+    fi
+  done
+  mv "$partfile" "$target"
+  rm -f "$partfile.ytdl"
+  emit finished $bytes $bytes NA NA 0 $idx $n
+}
+
+for (( k = 1; k <= count; k++ )); do
+  e=${sel[k]}
+  id=${ids[e]:-$ids[1]}; title=${titles[e]:-$titles[1]}
+  idx=NA; n=NA; pidx=NA
+  [[ $fixture == playlist.json ]] && pidx=$e   # %(playlist_index)s in the output template is the position in the whole list
+  [[ $fixture == playlist.json ]] && {   # like yt-dlp: autonumber = ordinal among the SELECTED items, n_entries = how many were selected
+    idx=$k; n=$count
+    print -r -- "[download] Downloading item $k of $n"
+  }
+  bytes=$total
+  [[ -n $sections ]] && bytes=$(( total / 4 ))
+  if (( extract )); then
+    ext=$afmt
+    final_rel=$(expand "$title" "$id" "$ext" "$pidx")
+    print -r -- "[download] Destination: $tmpdir/${final_rel%.*}.f140.m4a"
+    fetch_part "$tmpdir/${final_rel%.*}.f140.m4a" $(( bytes / 10 )) $idx $n
+    print -r -- "[ExtractAudio] Destination: $tmpdir/$final_rel"
+    mv "$tmpdir/${final_rel%.*}.f140.m4a" "$tmpdir/$final_rel"
+  elif [[ $fsel == *+* ]]; then
+    ext=mp4
+    final_rel=$(expand "$title" "$id" "$ext" "$pidx")
+    base=${final_rel%.*}
+    print -r -- "[download] Destination: $tmpdir/$base.f137.mp4"
+    fetch_part "$tmpdir/$base.f137.mp4" $(( bytes * 9 / 10 )) $idx $n
+    print -r -- "[download] Destination: $tmpdir/$base.f140.m4a"
+    fetch_part "$tmpdir/$base.f140.m4a" $(( bytes / 10 )) $idx $n
+    print -r -- "[Merger] Merging formats into \"$tmpdir/$final_rel\""
+    cat "$tmpdir/$base.f137.mp4" "$tmpdir/$base.f140.m4a" > "$tmpdir/$final_rel"
+    rm -f "$tmpdir/$base.f137.mp4" "$tmpdir/$base.f140.m4a"
+  else
+    ext=mp4
+    final_rel=$(expand "$title" "$id" "$ext" "$pidx")
+    print -r -- "[download] Destination: $tmpdir/$final_rel"
+    fetch_part "$tmpdir/$final_rel" $bytes $idx $n
+  fi
+  if [[ -n ${FAKE_YTDLP_PAYLOAD:-} && -f ${FAKE_YTDLP_PAYLOAD} && $ext == mp4 ]]; then cp "$FAKE_YTDLP_PAYLOAD" "$tmpdir/$final_rel"; fi
+  if [[ -n ${FAKE_YTDLP_SUBS:-} ]]; then
+    print -r -- "1
+00:00:00,000 --> 00:00:02,000
+Hello swamp" > "$tmpdir/${final_rel%.*}.en.srt"
+  fi
+  print -r -- "[EmbedThumbnail] ffmpeg: Adding thumbnail to \"$tmpdir/$final_rel\""
+  mkdir -p "${home}/${final_rel:h}"
+  print -r -- "[MoveFiles] Moving file \"$tmpdir/$final_rel\" to \"$home/$final_rel\""
+  mv "$tmpdir/$final_rel" "$home/$final_rel"
+  if [[ -f "$tmpdir/${final_rel%.*}.en.srt" ]]; then mv "$tmpdir/${final_rel%.*}.en.srt" "$home/${final_rel%.*}.en.srt"; fi
+  [[ -n $printfile ]] && print -r -- "$home/$final_rel" >> "$printfile"
+done
+exit 0

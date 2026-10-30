@@ -1,0 +1,8 @@
+"CFBundleDisplayName" = "Swamp Converter";
+"NSAppleEventsUsageDescription" = "Swamp Converter reads your Finder selection and the address of the page open in your browser, so the shortcut can convert or download what you are looking at.";
+"NSDesktopFolderUsageDescription" = "Swamp Converter converts files you drop on it, including files on your Desktop.";
+"NSDocumentsFolderUsageDescription" = "Swamp Converter converts files you drop on it, including files in Documents.";
+"NSDownloadsFolderUsageDescription" = "Swamp Converter converts files you drop on it and can watch folders you choose, such as Downloads.";
+"NSRemovableVolumesUsageDescription" = "Swamp Converter converts files you drop on it, including files on external drives.";
+"NSNetworkVolumesUsageDescription" = "Swamp Converter converts files you drop on it, including files on network volumes.";
+"NSSpeechRecognitionUsageDescription" = "Swamp Converter recognises speech in your audio and video files on this Mac to write a transcript. Nothing is sent anywhere.";

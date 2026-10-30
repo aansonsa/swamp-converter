@@ -1,0 +1,13 @@
+{
+  "id": "snd_one",
+  "title": "Swamp ambience",
+  "webpage_url": "https://soundcloud.com/swamp/ambience",
+  "extractor_key": "Soundcloud",
+  "uploader": "Swamp Sounds",
+  "duration": 187.3,
+  "thumbnail": "https://i1.sndcdn.com/artworks-000.jpg",
+  "formats": [
+    {"format_id": "http_mp3", "ext": "mp3", "vcodec": "none", "acodec": "mp3", "abr": 128, "tbr": 128, "filesize": 2996000, "protocol": "https"},
+    {"format_id": "hls_opus", "ext": "opus", "vcodec": "none", "acodec": "opus", "abr": 64, "tbr": 64, "protocol": "m3u8_native"}
+  ]
+}

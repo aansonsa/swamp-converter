@@ -1,0 +1,24 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  package:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package (ad-hoc signed)
+        env:
+          SC_VERSION: ${{ github.ref_name }}
+        run: |
+          export SC_VERSION="${SC_VERSION#v}"
+          ./build.sh package
+      - name: Publish the ZIP
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/SwampConverter.zip
+          generate_release_notes: true

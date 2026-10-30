@@ -1,0 +1,16 @@
+# Normalise text, keep binaries untouched.
+* text=auto
+*.swift text eol=lf
+*.sh text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.plist text eol=lf
+*.template text eol=lf
+*.strings text eol=lf
+*.png binary
+*.icns binary
+*.psd binary
+*.zip binary
+# Generated reference, not worth reviewing line by line
+docs/conversion-matrix.md linguist-generated=true

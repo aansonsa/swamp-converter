@@ -1,0 +1,20 @@
+name: Build and test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    # Swamp Converter needs macOS 26 or newer; the workflow uses whichever macOS image GitHub offers as "latest"
+    # and build.sh picks the newest installed MacOSX SDK of version 26 or higher.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check module ownership
+        run: ./build.sh check-modules
+      - name: Type-check everything
+        run: ./build.sh typecheck all
+      - name: Self-tests
+        run: ./build.sh selftest
