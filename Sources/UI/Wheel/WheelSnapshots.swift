@@ -108,6 +108,10 @@ extension WheelModule {
         typealias D = WheelSnapshotData
         s.register("wheel.three-sectors", size: size, variants: full) { WheelSnapshotView(D.model(pages: D.three, highlight: 1, summary: D.oneImage())) }
         s.register("wheel.eight-sectors", size: size, variants: full) { WheelSnapshotView(D.model(pages: D.eight, highlight: 3)) }
+        // The wheel alone, for artwork such as docs/social-preview.png. Glass over a transparent window samples whatever is behind the window, so it is rendered
+        // twice, over flat black and flat white; the difference of the two gives the wheel's own colour and opacity (a cut-out with no wallpaper in it).
+        s.register("wheel.promo-black", size: size, backdrop: .none, variants: [SnapshotVariant.dark]) { ZStack { Color.black; WheelSnapshotView(D.model(pages: D.eight, highlight: 3)) } }
+        s.register("wheel.promo-white", size: size, backdrop: .none, variants: [SnapshotVariant.dark]) { ZStack { Color.white; WheelSnapshotView(D.model(pages: D.eight, highlight: 3)) } }
         s.register("wheel.eight-idle", size: size, variants: full) { WheelSnapshotView(D.model(pages: D.eight, mode: .click)) }
         s.register("wheel.twelve-sectors", size: size, variants: full) { WheelSnapshotView(D.model(pages: D.twelve, highlight: 10)) }
         s.register("wheel.link-long-title", size: size, variants: full) { WheelSnapshotView(D.linkModel()) }

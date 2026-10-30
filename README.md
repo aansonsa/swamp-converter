@@ -1,9 +1,6 @@
 <div align="center">
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/wheel-convert-dark.png">
-  <img src="docs/screenshots/wheel-convert.png" alt="The Swamp Converter wheel" width="420">
-</picture>
+<img src="docs/social-preview.png" alt="Swamp Converter: drag a file, a wheel appears, drop it on what you want" width="860">
 
 # Swamp Converter
 
@@ -12,13 +9,18 @@
 Convert, compress, download and tidy files from a radial menu that opens right where you are working.
 Everything runs on your Mac.
 
+[![Download the latest release](https://img.shields.io/github/v/release/aansonsa/swamp-converter?style=for-the-badge&label=Download&logo=apple&logoColor=black&labelColor=FF72D9&color=7DA7D9)](https://github.com/aansonsa/swamp-converter/releases/latest)
+
+[![Latest release](https://img.shields.io/github/v/release/aansonsa/swamp-converter?label=release)](https://github.com/aansonsa/swamp-converter/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/aansonsa/swamp-converter/total?label=downloads)](https://github.com/aansonsa/swamp-converter/releases)
+[![Build](https://img.shields.io/github/actions/workflow/status/aansonsa/swamp-converter/build.yml?branch=main&label=build)](https://github.com/aansonsa/swamp-converter/actions/workflows/build.yml)
 ![macOS 26+](https://img.shields.io/badge/macOS-26%2B-black?logo=apple)
 ![Apple silicon](https://img.shields.io/badge/Apple%20silicon-native-black)
 ![Swift](https://img.shields.io/badge/Swift-5-F05138?logo=swift&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/license-MIT-FF72D9)
 ![Local first](https://img.shields.io/badge/runs-100%25%20on%20your%20Mac-7DA7D9)
 
-[Install](#install) · [Your first minute](#your-first-minute) · [Full guide](docs/GUIDE.md) · [Settings reference](docs/SETTINGS.md) · [Known limits](#honest-limits)
+[Install](#install) · [Your first minute](#your-first-minute) · [Full guide](docs/GUIDE.md) · [Settings reference](docs/SETTINGS.md) · [Known limits](#honest-limits) · [Ask a question](../../discussions) · [Report a bug](../../issues/new/choose)
 
 </div>
 
