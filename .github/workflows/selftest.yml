@@ -15,6 +15,6 @@ jobs:
     env:
       SC_SDK_MAX_MAJOR: "26"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Self-tests
         run: ./build.sh selftest
