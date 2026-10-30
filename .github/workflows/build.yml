@@ -19,5 +19,4 @@ jobs:
         run: ./build.sh check-modules
       - name: Type-check everything
         run: ./build.sh typecheck all
-      - name: Self-tests
-        run: ./build.sh selftest
+      # The full self-test suite lives in selftest.yml: it takes about 25 minutes and some tests need tools this runner does not have.
