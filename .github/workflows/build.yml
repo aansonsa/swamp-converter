@@ -8,8 +8,11 @@ on:
 jobs:
   build:
     # Swamp Converter needs macOS 26 or newer; the workflow uses whichever macOS image GitHub offers as "latest"
-    # and build.sh picks the newest installed MacOSX SDK of version 26 or higher.
+    # and build.sh picks the newest installed MacOSX SDK of version 26 or higher, capped at 26 here: the runner also has a
+    # MacOSX27 SDK, whose @State macro needs a plugin that only Xcode ships (build.sh compiles with the Command Line Tools).
     runs-on: macos-latest
+    env:
+      SC_SDK_MAX_MAJOR: "26"
     steps:
       - uses: actions/checkout@v4
       - name: Check module ownership

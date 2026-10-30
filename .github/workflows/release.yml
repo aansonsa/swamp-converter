@@ -7,6 +7,8 @@ on:
 jobs:
   package:
     runs-on: macos-latest
+    env:
+      SC_SDK_MAX_MAJOR: "26"
     permissions:
       contents: write
     steps:

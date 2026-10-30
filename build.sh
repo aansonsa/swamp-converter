@@ -49,11 +49,13 @@ resolve_sdk() {
   local best s v
   # The newest MacOSX<version>.sdk whose major version is 26 or higher (the app needs macOS 26): MacOSX26.5.sdk wins over the MacOSX26.sdk symlink, and a
   # future MacOSX27.sdk wins over both. Folder names that are not a version (MacOSX.sdk) are ignored.
+  # SC_SDK_MAX_MAJOR=26 caps the choice: the GitHub runners carry a MacOSX27 SDK next to 26.5, and in that SDK @State is a macro whose plugin ships only
+  # with Xcode, not with the Command Line Tools this script compiles with.
   best=$(for s in $SDK_DIR/MacOSX*.sdk(N); do
            v=${${s:t}#MacOSX}; v=${v%.sdk}
-           [[ ${v%%.*} == <-> ]] && (( ${v%%.*} >= 26 )) && print -- "$v $s"
+           [[ ${v%%.*} == <-> ]] && (( ${v%%.*} >= 26 && ${v%%.*} <= ${SC_SDK_MAX_MAJOR:-999} )) && print -- "$v $s"
          done | /usr/bin/sort -V | tail -n 1 | cut -d' ' -f2-)
-  [[ -n $best && -d $best ]] || die "no MacOSX26 or newer SDK in $SDK_DIR"
+  [[ -n $best && -d $best ]] || die "no MacOSX26 or newer SDK in $SDK_DIR${SC_SDK_MAX_MAJOR:+ (SC_SDK_MAX_MAJOR=$SC_SDK_MAX_MAJOR)}"
   SDK=$best
   COMMON=(-sdk $SDK -swift-version 5 -target arm64-apple-macos26.0 -module-cache-path $CACHE/ModuleCache
           -module-name SwampConverter -diagnostic-style llvm)
