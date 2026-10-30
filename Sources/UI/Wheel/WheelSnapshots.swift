@@ -64,6 +64,18 @@ enum WheelSnapshotData {
                      linkTitle: "How a very long page title wraps inside the hub of the download wheel, 4K HDR", linkHost: "youtube.com")
     }
 
+    /// The ring the app really builds for `item` (operation registry, tool detection, default layout), for artwork.
+    @MainActor
+    static func realModel(wheel: WheelKind, item: FileItem, highlight: Int) -> WheelModel {
+        let content = WheelContentBuilder().fileContent(items: [item], wheel: wheel)
+        let m = WheelModel(content: content, presentation: .drag, summary: WheelInputSummary.make(files: [item]))
+        m.isStatic = true
+        m.tick = nil
+        m.reachableWheels = WheelKind.fileWheels
+        if highlight >= 0 { m.setHighlight(highlight) }
+        return m
+    }
+
     /// The wheel for a screenshot taken from the clipboard.
     @MainActor
     static func clipboardModel() -> WheelModel {
@@ -112,6 +124,20 @@ extension WheelModule {
         // twice, over flat black and flat white; the difference of the two gives the wheel's own colour and opacity (a cut-out with no wallpaper in it).
         s.register("wheel.promo-black", size: size, backdrop: .none, variants: [SnapshotVariant.dark]) { ZStack { Color.black; WheelSnapshotView(D.model(pages: D.eight, highlight: 3)) } }
         s.register("wheel.promo-white", size: size, backdrop: .none, variants: [SnapshotVariant.dark]) { ZStack { Color.white; WheelSnapshotView(D.model(pages: D.eight, highlight: 3)) } }
+        // The three real rings (Convert, Tools, Actions) for one PNG, idle and with each sector hovered in turn, over black and white for the same matte. Used to
+        // composite the wheel onto a screen recording that did not capture it. 72 images, so only when SC_PROMO_WHEELS is set.
+        if ProcessInfo.processInfo.environment["SC_PROMO_WHEELS"] != nil {
+            let png = FileItem(url: URL(fileURLWithPath: "/tmp/swamp-logo.png"), isDirectory: false, size: 1_048_576)
+            for wheel in WheelKind.fileWheels {
+                for hover in -1..<8 {
+                    for (tag, color) in [("black", Color.black), ("white", Color.white)] {
+                        s.register("wheel.real-\(wheel.rawValue)-\(hover + 1)-\(tag)", size: size, backdrop: .none, variants: [SnapshotVariant.dark]) {
+                            ZStack { color; WheelSnapshotView(D.realModel(wheel: wheel, item: png, highlight: hover)) }
+                        }
+                    }
+                }
+            }
+        }
         s.register("wheel.eight-idle", size: size, variants: full) { WheelSnapshotView(D.model(pages: D.eight, mode: .click)) }
         s.register("wheel.twelve-sectors", size: size, variants: full) { WheelSnapshotView(D.model(pages: D.twelve, highlight: 10)) }
         s.register("wheel.link-long-title", size: size, variants: full) { WheelSnapshotView(D.linkModel()) }

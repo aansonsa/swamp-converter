@@ -26,6 +26,12 @@ Everything runs on your Mac.
 
 ---
 
+<div align="center">
+<img src="docs/media/swamp-wheel-demo.gif" alt="Dragging a file in Finder: a wheel opens under the pointer, and dropping the file on JPG converts it" width="860">
+<br>
+<sub>Drag a file, tap a key, drop it on a sector. Also as an <a href="docs/media/swamp-wheel-demo.mp4">MP4</a>, which is sharper. The wheel is the app’s own window; it is drawn over a recording of the Finder window because that recording does not capture it.</sub>
+</div>
+
 ## Why you might like it
 
 Made for creators who live in files: footage, pictures, PDFs, audio, links to reference videos. No window to open, no format list to scroll, no account.
