@@ -1,0 +1,59 @@
+name: Bug report
+description: Something does not work, or works wrongly
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. For a question or "how do I", please use [Discussions](https://github.com/aansonsa/swamp-converter/discussions) instead.
+        The ad-hoc signature prompt and missing optional programs (ffmpeg, LibreOffice, Pandoc, yt-dlp) are expected, see the [known limits](https://github.com/aansonsa/swamp-converter#honest-limits).
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What did you do, and what did you see? A screenshot helps.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Which file or link, which key or gesture, which operation on the wheel or in the Studio.
+      placeholder: |
+        1. Drag a .mov file
+        2. Tap Shift
+        3. Drop it on "MP4"
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: Swamp Converter > About
+      placeholder: "0.1.8"
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      placeholder: "26.1"
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      description: Only if it is about a link or a web page.
+      placeholder: "Safari, Chrome, Dia, Firefox..."
+  - type: textarea
+    id: tools
+    attributes:
+      label: Tools found
+      description: What Settings > Tools shows (ffmpeg, yt-dlp, LibreOffice, Pandoc...). Only if it is about converting or downloading.

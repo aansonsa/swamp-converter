@@ -1,0 +1,21 @@
+name: Idea or feature request
+description: Suggest something new or a better way to do something
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What are you trying to do
+      description: The situation first, not the solution. "I get footage from ... and need ..."
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help
+      description: How you imagine it working, if you have an idea. A sketch or a screenshot is welcome.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you do today
+      description: Another app, a workaround, a command.
